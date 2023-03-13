@@ -97,6 +97,14 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@netlify-builder/deploy:deploy",
+          "options": {
+            "outputPath": "dist/testwork",
+            "netlifyToken": "bXiF7GO69YQOqvYrbL0PQmK57ma54gbUDiTxRDZI2Xg",
+            "siteId": ""
+          }
         }
       }
     }
