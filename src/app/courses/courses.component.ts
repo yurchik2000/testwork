@@ -13,11 +13,18 @@ export class CoursesComponent {
     private courseService: CoursesService
   ) {}
 
-  getToken(): void {
-    this.courseService.getCourses().subscribe(data => 
-      console.log(data));  
-  }  
-  
+  testCourseId = '3b77ceb6-fb43-4cf5-a25b-8fe9222a0714';
+
+  ngOnInit() {
+    this.courseService.getCoursesNew();
+  }
+
+  getCourses(): void {
+      console.log(this.courseService.CoursesArray)
+    }    
+  getCourse(): void {
+    this.courseService.getCourse(this.testCourseId);
+  }
 
 }
 
