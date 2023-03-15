@@ -1,5 +1,46 @@
-<p>courses works!</p>
+<section class="courses container mx-auto p-2 mb-8">
+    <h1 class="text-center text-3xl font-bold mb-2">Courses</h1>
+    <ul 
+        class="courses__list"
+        *ngFor="let item of coursesList; index as index"
+    >
+        <li class="course__item border border-dashed border-2 border-gray-300 p-4 my-8">
+            <!-- Number -->                
+            <!-- .title -->
+            <a 
+                href="#" 
+                class="course__item-link hover:text-sky-900 transition-all duration-300"
+                [routerLink]= "[ '/course', item.id]"
+            >
+                <h3 class="course__title text-2xl font-bold mb-2"><span>{{index+1}}. </span>{{item.title}}</h3> 
+            </a>            
+            <!-- image -->
+            <div class="course__item__inner md:flex justify-start bg-sky-200 py-2">                
+              <div class="course__img-inner md:w-1/2 m-2">
+                <!-- <img class="mx-auto w-full" src="https://wisey.app/assets/images/web/course-covers/the-art-of-logical-reasoning/cover.webp" alt="" class="courses__img"> -->
+                <img class="mx-auto w-full" src="{{item.previewImageLink}}/cover.webp" alt="" class="courses__img">
+              </div>                
+              <div class="course__item-content text-lg md:text-xl leading-normal m-2">
+                  <!-- lessonsCount: 2 -->
+                  <p class="lessons__count font-bold mb-2">Lessons count: <span class="font-medium">{{item.lessonsCount}}</span></p>
+                  <!-- rating: 3.5 -->
+                  <p class="course__rating font-bold  mb-2">Rating: <span class="font-medium">{{item.rating}}</span></p>
+                  <!-- meta.skills array -->
+                  <p class="font-bold">Skills:</p>
+                  <ul 
+                    class="course__skills-list list-disc"
+                    *ngFor="let skill of item.meta.skills"
+                  >
+                    <li class="corse__skill-item mb-1 ml-8">{{skill}}</li>                    
+                  </ul>                
+              </div>
+            </div>                
+            
+            <!-- "https://wisey.app/videos/lack-of-motivation-how-to-overcome-it/preview/AppleHLS1/preview.m3u8" -->
+            <!-- "https://wisey.app/assets/images/web/course-covers/the-art-of-logical-reasoning/preview/cover.webp" -->
+            <!-- <source src="https://wisey.app/videos/lack-of-motivation-how-to-overcome-it/preview/AppleHLS1/preview.m3u8" type="application/x-mpegURL"> -->                  
+        </li>
+    </ul>        
+</section>
 
-<button (click)="getCourse()">Get course 1</button>
-<button (click)="getCourses()">Get courses</button>
 

@@ -6,6 +6,7 @@ import { HttpHeaders } from '@angular/common/http';
 
 import { IToken } from '../app/courses.interface'
 import { ICourses } from '../app/courses.interface';
+import { ICourse } from '../app/courses.interface';
 
 
 @Injectable({
@@ -22,9 +23,7 @@ export class CoursesService {
   }
 
   public CoursesArray: Array<ICourses> = [];
-  private activeToken: IToken = {
-    token: ''
-  }
+  public activeToken: IToken = { token: '' }
 
   constructor(
     private http: HttpClient
@@ -34,38 +33,23 @@ export class CoursesService {
     return this.http.get<IToken>(this.url + this.api.token)
   }
   
-  getCourses(): Observable<ICourses[]> {                
+  getCourses(): Observable<any> {                
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
         Authorization: `Bearer ${this.activeToken.token}`        
       })
     };
-    return this.http.get<ICourses[]>(this.url + this.api.courses, httpOptions)
+    return this.http.get<any>(this.url + this.api.courses, httpOptions)
   }
-
-  getCoursesNew(): void {
-    this.getToken().subscribe(data => {      
-      this.activeToken = data;      
-      this.getCourses().subscribe(data => {
-        this.CoursesArray = data;        
-      })      
-    })    
-  }
-
-  getCourse(courseId:string): void {    
-    this.getOneCourse(courseId).subscribe(data => {      
-      console.log(data);
-    })          
-  }
-
-  getOneCourse(courseId:string): Observable<ICourses[]> {                
+    
+  getCourse(courseId:string): Observable<ICourse> {                
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
         Authorization: `Bearer ${this.activeToken.token}`        
       })
     };
-    return this.http.get<ICourses[]>(this.url + this.api.courses + "/"+ courseId, httpOptions)
+    return this.http.get<ICourse>(this.url + this.api.courses + "/"+ courseId, httpOptions)
   }  
 }

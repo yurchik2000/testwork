@@ -24,3 +24,39 @@ export interface ICourses {
 export interface IToken {    
     token: string;
 }
+
+export interface ICourse {
+    containsLockedLessons: boolean;
+    description: string;
+    duration: number;
+    id: string;
+    launchDate: Date;
+    lessons: Array<ILesson>;
+    meta: {
+        courseVideoPreview: {
+            duration: number,
+            link: string,
+            previewImageLink: string
+        },
+        skills: Array<string>,
+        slug: string
+    };
+    previewImageLink: string;
+    rating: number;
+    status: string;
+    tags: Array<string>;
+    title: string;
+}
+
+export interface ILesson {
+    duration: number;
+    id: string;
+    link: string;
+    meta: null;
+    order: number;  
+    previewImageLink: string;    
+    status: string;
+    title: string;
+    type: string;
+
+}
