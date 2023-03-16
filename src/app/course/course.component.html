@@ -1,6 +1,6 @@
 <section class="course container mx-auto">
-    <h1 class="text-center text-3xl font-bold mb-2">Lack of Motivation & How to Overcome It</h1>
-    <div class="course__item__inner md:flex justify-start bg-cyan-200">
+    <h1 class="text-center text-3xl font-bold mb-2">Lack of Motivation & How to Overcome It</h1>    
+    <div class="course__item__inner md:flex justify-start bg-cyan-200 mb-4">
       <div class="course__img-inner md:w-1/2 m-2">
         <img class="mx-auto w-full" src="https://wisey.app/assets/images/web/course-covers/lack-of-motivation-how-to-overcome-it/cover.webp" alt="" class="courses__img">
       </div>                
@@ -19,17 +19,28 @@
           <p class="course__rating font-bold  mb-2">Launch Date: <span class="font-medium">{{course.launchDate | date:'mediumDate'}}</span></p>
       </div>        
     </div>  
-    <ul *ngFor="let lesson of course.lessons; index as index" class="lessons__list flex flex-wrap justify-center">
-        <li class="lesson__item w-96 m-4">
+    <video #video 
+      id="video" 
+      class="video w-3/5 mx-auto border border-solid border-2 border-gray-300 mb-2" 
+      controls 
+      (click)="playVideo('http://d3rlna7iyyu8wu.cloudfront.net/skip_armstrong/skip_armstrong_stereo_subs.m3u8', 0)">
+    </video>
+    <ul class="lessons__list flex flex-wrap justify-center w-full">
+        <li 
+          class="lesson__item w-96 m-4"
+          *ngFor="let lesson of course.lessons; index as index"
+          (click)="checkStatus(lesson.status)"
+        >
           <div class="lesson__title-inner flex justify-between">
-            <p class="lesson__title text-lg font-bold mb-2">{{index+1}}. {{lesson.title}}</p>
+            <p class="lesson__title text-lg font-bold mb-2">{{index+1}}. {{lesson?.title}}</p>
           <p class="lesson__status">{{lesson.status}}</p>
           </div>          
-          <div class="lesson__video-inner">          
-            <video id="video" class="video-js vjs-default-skin mx-auto" preload="none" crossorigin="true" controls width="640" height="268" data-setup="{}">
+          <div class="lesson__video-inner">                            
+                  <img class="mx-auto w-full" src="https://wisey.app/assets/images/web/lessons-covers/lack-of-motivation-how-to-overcome-it/lesson-1/lesson-1.webp" alt="image" class="courses__img">
+                  <!-- <img (click)="playVideo(lesson.previewImageLink, 0)" src="{{lesson.previewImageLink}}/lesson-{{index+1}}.webp"  alt="" class="lesson__video-poster">                                     -->
+            <!-- <video id="video" class="video-js vjs-default-skin mx-auto" preload="none" crossorigin="true" controls width="640" height="268" data-setup="{}">
               <source src='https://wisey.app/videos/lack-of-motivation-how-to-overcome-it/lesson-1/AppleHLS1/lesson-1.m3u8' type='application/x-mpegURL'>
-            </video>
-            <!-- <img class="mx-auto w-full" src="https://wisey.app/assets/images/web/lessons-covers/lack-of-motivation-how-to-overcome-it/lesson-1/lesson-1.webp" alt="image" class="courses__img"> -->
+            </video> -->            
           </div>              
         </li>        
       </ul>      

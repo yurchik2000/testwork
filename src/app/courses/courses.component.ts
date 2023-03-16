@@ -38,7 +38,8 @@ export class CoursesComponent {
 
   getAllCourses(): void {
     this.courseService.getToken().subscribe(data => {      
-      this.courseService.activeToken = data;            
+      this.courseService.activeToken = data;
+      localStorage.setItem('token', JSON.stringify(data));
       this.courseService.getCourses().subscribe(data => {        
         this.courseService.CoursesArray = data.courses;               
         this.coursesList =  this.courseService.CoursesArray;        

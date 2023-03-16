@@ -43,11 +43,11 @@ export class CoursesService {
     return this.http.get<any>(this.url + this.api.courses, httpOptions)
   }
     
-  getCourse(courseId:string): Observable<ICourse> {                
+  getCourse(courseId:string): Observable<ICourse> {                        
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        Authorization: `Bearer ${this.activeToken.token}`        
+        Authorization: `Bearer ${this.activeToken}`
       })
     };
     return this.http.get<ICourse>(this.url + this.api.courses + "/"+ courseId, httpOptions)
