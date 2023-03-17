@@ -1,8 +1,11 @@
-<section class="course container mx-auto">
+<div *ngIf="!course" class="spinner course container mx-auto mt-2">
+  <div aria-label="Loading..." role="status" class="flex justify-center items-center space-x-2"><svg class="h-6 w-6 animate-spin stroke-gray-500" viewBox="0 0 256 256"><line x1="128" y1="32" x2="128" y2="64" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="195.9" y1="60.1" x2="173.3" y2="82.7" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="224" y1="128" x2="192" y2="128" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="195.9" y1="195.9" x2="173.3" y2="173.3" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="128" y1="224" x2="128" y2="192" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="60.1" y1="195.9" x2="82.7" y2="173.3" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="32" y1="128" x2="64" y2="128" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="60.1" y1="60.1" x2="82.7" y2="82.7" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line></svg><span class="text-xs font-medium text-gray-500">Loading...</span></div>
+</div>
+<section *ngIf="course" class="course container mx-auto">
     <h1 class="text-center text-3xl font-bold mb-2">Lack of Motivation & How to Overcome It</h1>    
     <div class="course__item__inner md:flex justify-start bg-cyan-200 mb-4">
-      <div class="course__img-inner md:w-1/2 m-2">
-        <img class="mx-auto w-full" src="https://wisey.app/assets/images/web/course-covers/lack-of-motivation-how-to-overcome-it/cover.webp" alt="" class="courses__img">
+      <div class="course__img-inner md:w-1/2 m-2">        
+        <img class="mx-auto w-full" src="{{course.previewImageLink}}/cover.webp" alt="" class="courses__img">
       </div>                
       <div class="course__item-content text-lg md:text-xl leading-normal m-2">
           <!-- lessonsCount: 2 -->
@@ -18,30 +21,64 @@
           <p class="course__rating font-bold  mb-2">Status: <span class="font-medium">{{course.status}}</span></p>
           <p class="course__rating font-bold  mb-2">Launch Date: <span class="font-medium">{{course.launchDate | date:'mediumDate'}}</span></p>
       </div>        
-    </div>  
-    <video #video 
-      id="video" 
-      class="video w-3/5 mx-auto border border-solid border-2 border-gray-300 mb-2" 
-      controls 
-      (click)="playVideo('http://d3rlna7iyyu8wu.cloudfront.net/skip_armstrong/skip_armstrong_stereo_subs.m3u8', 0)">
+    </div>
+    <div class="video__inner w-3/5 mx-auto border border-solid border-2 border-gray-300 mb-2 ">
+      <div 
+        *ngIf="showCoursePreviewImage"
+        class="course__poster-inner video w-full"
+        (click)="playVideo(course.meta.courseVideoPreview.link, course.id)"
+    >
+      <img src="{{course.meta.courseVideoPreview.previewImageLink}}/preview.webp" alt="" class="course__poster">      
+    </div>    
+    <video                            
+        id="video" 
+        class="video w-full mx-auto border border-solid border-2 border-gray-300 mb-2 hidden" 
+        controls 
+      >
     </video>
-    <ul class="lessons__list flex flex-wrap justify-center w-full">
+    </div>
+
+    <ul class="lessons__list flex flex-wrap justify-center w-full relative">
         <li 
           class="lesson__item w-96 m-4"
           *ngFor="let lesson of course.lessons; index as index"
-          (click)="checkStatus(lesson.status)"
+          (click)="checkStatus(lesson.status, lesson.id)"
         >
           <div class="lesson__title-inner flex justify-between">
             <p class="lesson__title text-lg font-bold mb-2">{{index+1}}. {{lesson?.title}}</p>
           <p class="lesson__status">{{lesson.status}}</p>
           </div>          
-          <div class="lesson__video-inner">                            
-                  <img class="mx-auto w-full" src="https://wisey.app/assets/images/web/lessons-covers/lack-of-motivation-how-to-overcome-it/lesson-1/lesson-1.webp" alt="image" class="courses__img">
-                  <!-- <img (click)="playVideo(lesson.previewImageLink, 0)" src="{{lesson.previewImageLink}}/lesson-{{index+1}}.webp"  alt="" class="lesson__video-poster">                                     -->
-            <!-- <video id="video" class="video-js vjs-default-skin mx-auto" preload="none" crossorigin="true" controls width="640" height="268" data-setup="{}">
-              <source src='https://wisey.app/videos/lack-of-motivation-how-to-overcome-it/lesson-1/AppleHLS1/lesson-1.m3u8' type='application/x-mpegURL'>
-            </video> -->            
-          </div>              
-        </li>        
-      </ul>      
-    </section>
+          <div class="lesson__video-inner h-48">
+                <img 
+                    class="mx-auto w-full" 
+                    src="{{lesson.previewImageLink}}/lesson-{{index+1}}.webp"                     
+                    alt="image" 
+                    class="courses__img"
+                    (click)="playLesson(lesson.link, lesson.id)"
+                >     
+                  <video                            
+                        id="videoLesson"                     
+                        class="video w-full mx-auto border border-solid border-2 border-gray-300 mb-2 hidden -mt-48" 
+                        controls 
+                      >
+                  </video>                           
+          </div>     
+          <!-- <div *ngIf="showLesson" class="video__modal absolute inset-0 bg-gray-100/80 cursor-auto">
+            <div class="header__phone-modal absolute inset-0 h-screen flex justify-center items-center">
+                <div class="header__phone-modal--inner flex-col bg-white rounded-lg p-4 text-lg">
+                    <div class="header__phone-modal--close text-end mb-2 cursor-pointer">X</div>
+                    <h2 class="text-center font-bold text-xl mb-2 w-2/3 mx-auto">Lack of challenges</h2>
+                    <div class="video__inner w-96 h-24">
+                      <video                            
+                        id="video"                     
+                        class="video w-full mx-auto border border-solid border-2 border-gray-300 mb-2 hidden" 
+                        controls 
+                      >
+                      </video>
+                    </div>                
+                </div>                                
+              </div>                                    
+          </div>          -->
+        </li>                
+      </ul>            
+  </section>

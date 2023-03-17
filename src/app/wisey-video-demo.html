@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div>
+      <h1>Hls.js demo - basic usage</h1>
+      <video height="600" id="video" controls></video>
+    </div>
+
+    <script src="//cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhYWM5ZTBkYy1lZGU1LTRjODItOWI2YS00MzhmNmExOWZiNGQiLCJwbGF0Zm9ybSI6InN1YnNjcmlwdGlvbnMiLCJpYXQiOjE2Nzg4ODI1MjgsImV4cCI6MTY3OTc4MjUyOH0.0m36QKseyFs1VNhm78E4vMlTUG8Jo-UquuW_dPMZPUY";
+
+      fetch("https://api.wisey.app/api/v1/core/preview-courses", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((response) => response.courses)
+        .then((coursesPreview) => {
+          console.log("!!!", coursesPreview);
+          const videoUrl = coursesPreview[0].meta.courseVideoPreview.link;
+
+          const video = document.getElementById("video");
+          if (Hls.isSupported()) {
+            const hls = new Hls({
+              debug: true,
+            });
+            hls.loadSource(videoUrl);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+              video.muted = true;
+              video.play();
+            });
+          }
+          // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
+          // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element through the `src` property.
+          // This is using the built-in support of the plain video element, without using hls.js.
+          else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+            video.src = videoUrl;
+            video.addEventListener("canplay", function () {
+              video.play();
+            });
+          }
+        });
+    </script>
+  </body>
+</html>

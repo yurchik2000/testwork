@@ -16,6 +16,7 @@ export class CoursesComponent {
   testCourseId = '3b77ceb6-fb43-4cf5-a25b-8fe9222a0714';
 
   public coursesList: Array<ICourses> = this.courseService.CoursesArray;
+  public isLoading = false;
 
 
   ngOnInit() {
@@ -43,6 +44,7 @@ export class CoursesComponent {
       this.courseService.getCourses().subscribe(data => {        
         this.courseService.CoursesArray = data.courses;               
         this.coursesList =  this.courseService.CoursesArray;        
+        this.isLoading = true;
       })      
     })    
   }

@@ -13,14 +13,13 @@ import { ToastrService } from 'ngx-toastr';
 export class CourseComponent {
 
   public course!: ICourse;
+  public isLoading = true;
+  public showCoursePreviewImage = true;  
+  public showLesson = false;
+  public activeVideoId:string = '';
 
-  private config = {
-    startPosition: 0 // can be any number you want    
-  }
-  private hls = new HLS(this.config);
-
-  @ViewChild('video', { static: true }) 
-  private video!: ElementRef<HTMLVideoElement>;  
+  // @ViewChild('video', { static: true }) 
+  // private video!: ElementRef<HTMLVideoElement>;  
 
   constructor(
     private courseService: CoursesService,
@@ -29,7 +28,7 @@ export class CourseComponent {
   ) {}
 
   ngOnInit() {            
-    this.getOneCourse();
+    this.getOneCourse();        
   }
 
   getOneCourse(): void {    
@@ -37,28 +36,64 @@ export class CourseComponent {
     this.courseService.activeToken = JSON.parse(data).token;
     const param = this.activatedRote.snapshot.paramMap.get('id');
     if (param) this.courseService.getCourse(param).subscribe(data => {
-      this.course = data;      
-      // console.log(this.course.lessons)
+      this.course = data;            
+      console.log(data)
     });
+    
   }
 
-  playVideo(name:string, startTime: number): void {    
-      // const video = document.querySelector('#video');      
-      // console.log(this.video)
-      const config = {
-        startPosition: startTime // can be any number you want
-      }
-      // this.hls.loadSource(name+'/lesson-1.m3u8');
-      this.hls.loadSource('https://wisey.app/videos/lack-of-motivation-how-to-overcome-it/preview/AppleHLS1/preview.m3u8');
-      const activeVideoId = '1234-5678';
-      this.hls.attachMedia(this.video.nativeElement);
-      // console.log(this.video.nativeElement);
-      this.video.nativeElement.play();
-      }
-    
-  checkStatus(status: string): void {
+  playVideo(name:string, id:string): void {        
+    let startTime!: number;
+    if (localStorage.getItem(id)) {
+      startTime = JSON.parse(localStorage.getItem(id)||'');
+    } else startTime= 0;    
+    const config = {
+      startPosition: startTime // can be any number you want    
+    }
+    let hls = new HLS(config);
+      this.showCoursePreviewImage = false;              
+      const video:HTMLMediaElement = document.querySelector('#video')!;
+      video.classList.remove('hidden');            
+      hls.loadSource(name);
+      hls.attachMedia(video);
+      hls.on(HLS.Events.MEDIA_ATTACHED, function () {
+              video.muted = true;
+              video.play();
+      });
+      video.ontimeupdate = (event) => {        
+        localStorage.setItem(id, JSON.stringify(video.currentTime))
+      };      
+    }    
+  checkStatus(status: string, id:string): void {    
     if (status=== 'locked') {    
       this.toastr.success('This lesson is locked, try another one');
-    }
+    }        
   }
-}
+
+  playLesson(name:string, id:string): void {    
+    this.activeVideoId = id;
+    console.log(id);
+    this.showLesson = true;
+    let startTime!: number;
+    if (localStorage.getItem(id)) {
+      startTime = JSON.parse(localStorage.getItem(id)||'');
+    } else startTime= 0;    
+    const config = {
+      startPosition: startTime // can be any number you want    
+    }
+    let hls = new HLS(config);      
+      const video:HTMLMediaElement = document.querySelector('#videoLesson')!;
+      video.classList.remove('hidden');            
+      hls.loadSource(name);
+      hls.attachMedia(video);
+      hls.on(HLS.Events.MEDIA_ATTACHED, function () {              
+              video.play();
+      });
+      video.ontimeupdate = (event) => {        
+        localStorage.setItem(id, JSON.stringify(video.currentTime))
+      };      
+    }    
+  }
+
+
+
