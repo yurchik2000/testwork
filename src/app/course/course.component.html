@@ -22,11 +22,11 @@
           <p class="course__rating font-bold  mb-2">Launch Date: <span class="font-medium">{{course.launchDate | date:'mediumDate'}}</span></p>
       </div>        
     </div>
-    <div class="video__inner w-3/5 mx-auto border border-solid border-2 border-gray-300 mb-2 ">
+    <div class="video__inner w-3/5 mx-auto border border-solid border-2 border-gray-300 mb-2 hover:cursor-pointer">
       <div 
         *ngIf="showCoursePreviewImage"
         class="course__poster-inner video w-full"
-        (click)="playVideo(course.meta.courseVideoPreview.link, course.id)"
+        (mouseenter)="playVideo(course.meta.courseVideoPreview.link, course.id)"
     >
       <img src="{{course.meta.courseVideoPreview.previewImageLink}}/preview.webp" alt="" class="course__poster">      
     </div>    
@@ -41,28 +41,28 @@
     <ul class="lessons__list flex flex-wrap justify-center w-full relative">
         <li 
           class="lesson__item w-96 m-4"
-          *ngFor="let lesson of course.lessons; index as index"
-          (click)="checkStatus(lesson.status, lesson.id)"
+          *ngFor="let lesson of course.lessons; index as index"          
         >
           <div class="lesson__title-inner flex justify-between">
             <p class="lesson__title text-lg font-bold mb-2">{{index+1}}. {{lesson?.title}}</p>
           <p class="lesson__status">{{lesson.status}}</p>
           </div>          
-          <div class="lesson__video-inner h-48">
-                <img 
-                    class="mx-auto w-full" 
-                    src="{{lesson.previewImageLink}}/lesson-{{index+1}}.webp"                     
-                    alt="image" 
-                    class="courses__img"
-                    (click)="playLesson(lesson.link, lesson.id)"
-                >     
-                  <video                            
-                        id="videoLesson"                     
-                        class="video w-full mx-auto border border-solid border-2 border-gray-300 mb-2 hidden -mt-48" 
-                        controls 
+          
+          <div class="lesson__video-inner hover:cursor-pointer">                
+                <div class="video__inner mx-automb-2">            
+                  <video                                
+                        poster="{{lesson.previewImageLink}}/lesson-{{index+1}}.webp"                    
+                        id="videoLesson"
+                        height="480"
+                        [id]="'id-'+lesson.id"
+                        class="video w-full" 
+                        controls                         
+                        (click)="playLesson(lesson.link, lesson.id, lesson.status)"
                       >
                   </video>                           
+                </div>                  
           </div>     
+
           <!-- <div *ngIf="showLesson" class="video__modal absolute inset-0 bg-gray-100/80 cursor-auto">
             <div class="header__phone-modal absolute inset-0 h-screen flex justify-center items-center">
                 <div class="header__phone-modal--inner flex-col bg-white rounded-lg p-4 text-lg">

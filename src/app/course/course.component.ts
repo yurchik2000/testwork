@@ -16,10 +16,7 @@ export class CourseComponent {
   public isLoading = true;
   public showCoursePreviewImage = true;  
   public showLesson = false;
-  public activeVideoId:string = '';
-
-  // @ViewChild('video', { static: true }) 
-  // private video!: ElementRef<HTMLVideoElement>;  
+  public activeVideoId:string = '';  
 
   constructor(
     private courseService: CoursesService,
@@ -42,7 +39,8 @@ export class CourseComponent {
     
   }
 
-  playVideo(name:string, id:string): void {        
+  playVideo(name:string, id:string): void {            
+    console.log('hover')
     let startTime!: number;
     if (localStorage.getItem(id)) {
       startTime = JSON.parse(localStorage.getItem(id)||'');
@@ -63,16 +61,13 @@ export class CourseComponent {
       video.ontimeupdate = (event) => {        
         localStorage.setItem(id, JSON.stringify(video.currentTime))
       };      
-    }    
-  checkStatus(status: string, id:string): void {    
-    if (status=== 'locked') {    
-      this.toastr.success('This lesson is locked, try another one');
-    }        
-  }
+    }          
 
-  playLesson(name:string, id:string): void {    
-    this.activeVideoId = id;
-    console.log(id);
+  playLesson(name:string, id:string, status: string): void {
+    if (status=== 'locked') {    
+      this.toastr.success('This lesson is locked, try another one');      
+    }  else {
+      this.activeVideoId = id;    
     this.showLesson = true;
     let startTime!: number;
     if (localStorage.getItem(id)) {
@@ -81,8 +76,8 @@ export class CourseComponent {
     const config = {
       startPosition: startTime // can be any number you want    
     }
-    let hls = new HLS(config);      
-      const video:HTMLMediaElement = document.querySelector('#videoLesson')!;
+    let hls = new HLS(config);                                    
+      const video:HTMLMediaElement = document.querySelector(`#id-${id}`)!;      
       video.classList.remove('hidden');            
       hls.loadSource(name);
       hls.attachMedia(video);
@@ -91,7 +86,9 @@ export class CourseComponent {
       });
       video.ontimeupdate = (event) => {        
         localStorage.setItem(id, JSON.stringify(video.currentTime))
-      };      
+      };   
+    }
+         
     }    
   }
 
