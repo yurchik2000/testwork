@@ -17,25 +17,12 @@ export class CoursesComponent {
 
   public coursesList: Array<ICourses> = this.courseService.CoursesArray;
   public isLoading = false;
+  public p:number = 1;
 
 
   ngOnInit() {
     this.getAllCourses();    
   }
-
-  getCourses(): void {
-      console.log(this.courseService.CoursesArray);
-    }    
-
-  // getCourse(): void {
-  //   this.getOneCourse(this.testCourseId);
-  // }
-  
-  // getOneCourse(courseId:string): void {    
-  //   this.courseService.getCourse(courseId).subscribe(data => {      
-  //     console.log(data);
-  //   })          
-  // }
 
   getAllCourses(): void {
     this.courseService.getToken().subscribe(data => {      
@@ -48,7 +35,6 @@ export class CoursesComponent {
       })      
     })    
   }
-
 
 }
 

@@ -5,11 +5,10 @@
     <h1 class="text-center text-3xl font-bold mb-2">Courses</h1>
     <ul 
         class="courses__list"
-        *ngFor="let item of coursesList; index as index"
+        *ngFor="let item of coursesList| paginate: { itemsPerPage: 10, currentPage: p }; index as index "
     >
         <li class="course__item border border-dashed border-2 border-gray-300 p-4 my-8">
-            <!-- Number -->                
-            <!-- .title -->
+            <!-- Number, title -->                            
             <a 
                 href="#" 
                 class="course__item-link hover:text-sky-900 transition-all duration-300"
@@ -19,8 +18,7 @@
             </a>            
             <!-- image -->
             <div class="course__item__inner md:flex justify-start bg-sky-200 py-2">                
-              <div class="course__img-inner md:w-1/2 m-2">
-                <!-- <img class="mx-auto w-full" src="https://wisey.app/assets/images/web/course-covers/the-art-of-logical-reasoning/cover.webp" alt="" class="courses__img"> -->
+              <div class="course__img-inner md:w-1/2 m-2">                
                 <img class="mx-auto w-full" src="{{item.previewImageLink}}/cover.webp" alt="" class="courses__img">
               </div>                
               <div class="course__item-content text-lg md:text-xl leading-normal m-2">
@@ -37,13 +35,8 @@
                     <li class="corse__skill-item mb-1 ml-8">{{skill}}</li>                    
                   </ul>                
               </div>
-            </div>                
-            
-            <!-- "https://wisey.app/videos/lack-of-motivation-how-to-overcome-it/preview/AppleHLS1/preview.m3u8" -->
-            <!-- "https://wisey.app/assets/images/web/course-covers/the-art-of-logical-reasoning/preview/cover.webp" -->
-            <!-- <source src="https://wisey.app/videos/lack-of-motivation-how-to-overcome-it/preview/AppleHLS1/preview.m3u8" type="application/x-mpegURL"> -->                  
-        </li>
-    </ul>        
+            </div>                                        
+        </li>        
+    </ul>    
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>    
 </section>
-
-

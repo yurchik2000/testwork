@@ -2,6 +2,19 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.6.
 
+# Мова виконання завдання
+
+JavaScript, TypeScript.
+
+# Додаткові бібліотеки
+
+tailwindcss, hls.js, ngx-pagination, ngx-toastr
+
+# Механіка роботи:
+
+1. Токен отримується один раз і зберігається в LocalStorage
+2. Час перегляду кожного відео зберігається в LoaclStorage з прив"язкою до ID відео.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.

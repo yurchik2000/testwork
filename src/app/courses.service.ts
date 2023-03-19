@@ -24,6 +24,7 @@ export class CoursesService {
 
   public CoursesArray: Array<ICourses> = [];
   public activeToken: IToken = { token: '' }
+  public p:number = 1;
 
   constructor(
     private http: HttpClient

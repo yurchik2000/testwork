@@ -46,7 +46,7 @@ export class CourseComponent {
       startTime = JSON.parse(localStorage.getItem(id)||'');
     } else startTime= 0;    
     const config = {
-      startPosition: startTime // can be any number you want    
+      startPosition: startTime, // can be any number you want          
     }
     let hls = new HLS(config);
       this.showCoursePreviewImage = false;              
@@ -74,14 +74,14 @@ export class CourseComponent {
       startTime = JSON.parse(localStorage.getItem(id)||'');
     } else startTime= 0;    
     const config = {
-      startPosition: startTime // can be any number you want    
+      startPosition: startTime, // can be any number you want          
     }
     let hls = new HLS(config);                                    
       const video:HTMLMediaElement = document.querySelector(`#id-${id}`)!;      
       video.classList.remove('hidden');            
       hls.loadSource(name);
       hls.attachMedia(video);
-      hls.on(HLS.Events.MEDIA_ATTACHED, function () {              
+      hls.on(HLS.Events.MEDIA_ATTACHED, function () {                            
               video.play();
       });
       video.ontimeupdate = (event) => {        
